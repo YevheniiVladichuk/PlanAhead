@@ -48,6 +48,7 @@ struct NavigationBarConfigurer {
 
 struct K {
     static let id = "ToDoItemCell"
+    static let arrayKey = "ToDoListArray"
     
     struct colors {
         static let mainBackgroundColor = "MainBackcroundColor"
