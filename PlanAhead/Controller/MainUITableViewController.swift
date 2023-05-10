@@ -6,16 +6,20 @@
 //
 
 import UIKit
+import CoreData
 
 class MainUITableViewController: UITableViewController {
     
     let interface = Interface()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var itemsArray = [Item]()
+    var searchBar: UISearchBar!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        searchBar = interface.configureSearchbar(for: tableView, withDelegate: self)
         
         interface.configNavigationBar(navItem: self.navigationItem, maintTitle: "Main List", rBtnTitle: "+", target: self, rBtnAction: #selector(addButtonPressed))
         
@@ -23,7 +27,6 @@ class MainUITableViewController: UITableViewController {
         
         loadItems()
     }
-    
     
     // MARK: - TableView Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -48,6 +51,10 @@ class MainUITableViewController: UITableViewController {
         
         itemsArray[indexPath.row].done = !itemsArray[indexPath.row].done
         
+        // Delete from database
+        //        context.delete(itemsArray[indexPath.row])
+        //        itemsArray.remove(at: indexPath.row)
+        
         saveItems()
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -69,9 +76,9 @@ class MainUITableViewController: UITableViewController {
             //action when user clicks the "new" button on UIAlertController
             if textField.text != "" {
                 
-                let newItem = Item()
+                let newItem = Item(context: self.context)
                 newItem.title = textField.text!
-                
+                newItem.done = false
                 self.itemsArray.append(newItem)
                 self.saveItems()
             }
@@ -89,25 +96,52 @@ class MainUITableViewController: UITableViewController {
     // MARK: - Model Manipulatiom Methods
     
     func saveItems() {
-        let encoder = PropertyListEncoder()
-        
         do {
-            let data = try encoder.encode(itemsArray)
-            try data.write(to: dataFilePath!)
+            try context.save()
         } catch {
-            print("Error encoding item array, \(error)")
+            print("Error saving context: \(error)")
         }
         self.tableView.reloadData()
     }
     
-    func loadItems() {
-        if let data = try? Data(contentsOf: dataFilePath!) {
-            let decoder = PropertyListDecoder()
+    // func with defoult value
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+        
+        do {
+            itemsArray = try context.fetch(request)
+        } catch {
+            print("Error fetching context: \(error)")
+        }
+        
+        tableView.reloadData()
+    }
+}
+
+extension MainUITableViewController: UISearchBarDelegate {
+    
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+////        let request: NSFetchRequest<Item> = Item.fetchRequest()
+////
+////        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+////        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+////
+////        loadItems(with: request)
+//    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        loadItems(with: request)
+        
+        if searchBar.text!.count == 0 {
+            loadItems()
             
-            do {
-                itemsArray = try decoder.decode([Item].self, from: data)
-            } catch {
-                print("Error decoding item array, \(error)")
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
             }
         }
     }
