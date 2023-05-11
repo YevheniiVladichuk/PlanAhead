@@ -16,13 +16,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        let mainVC = MainUITableViewController()
-        mainVC.view.backgroundColor = UIColor(named: K.colors.mainBackgroundColor)
-        window?.rootViewController = UINavigationController(rootViewController: mainVC)
+        let categoryController = CategoryController()
+        categoryController.view.backgroundColor = UIColor(named: K.colors.mainBackgroundColor)
+        window?.rootViewController = UINavigationController(rootViewController: categoryController)
         window?.makeKeyAndVisible()
     }
     
-
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.

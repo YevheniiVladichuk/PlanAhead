@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D01E02F2A0BAD3300A2C470 /* CategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01E02E2A0BAD3300A2C470 /* CategoryController.swift */; };
 		4D3C323F2A07F04E00E56A57 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4D3C323D2A07F04E00E56A57 /* CoreDataModel.xcdatamodeld */; };
 		4D8E328B29E404F3004D7712 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8E328A29E404F3004D7712 /* AppDelegate.swift */; };
 		4D8E328D29E404F3004D7712 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8E328C29E404F3004D7712 /* SceneDelegate.swift */; };
-		4D8E328F29E404F3004D7712 /* MainUITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8E328E29E404F3004D7712 /* MainUITableViewController.swift */; };
+		4D8E328F29E404F3004D7712 /* ToDoListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8E328E29E404F3004D7712 /* ToDoListController.swift */; };
 		4D8E329429E404F6004D7712 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D8E329329E404F6004D7712 /* Assets.xcassets */; };
 		4D8E329729E404F6004D7712 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D8E329529E404F6004D7712 /* LaunchScreen.storyboard */; };
 		4D8E329F29E4417D004D7712 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8E329E29E4417D004D7712 /* Helpers.swift */; };
@@ -18,11 +19,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4D01E02E2A0BAD3300A2C470 /* CategoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryController.swift; sourceTree = "<group>"; };
 		4D3C323E2A07F04E00E56A57 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		4D8E328729E404F3004D7712 /* PlanAhead.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlanAhead.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D8E328A29E404F3004D7712 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4D8E328C29E404F3004D7712 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		4D8E328E29E404F3004D7712 /* MainUITableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUITableViewController.swift; sourceTree = "<group>"; };
+		4D8E328E29E404F3004D7712 /* ToDoListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListController.swift; sourceTree = "<group>"; };
 		4D8E329329E404F6004D7712 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D8E329629E404F6004D7712 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4D8E329829E404F6004D7712 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,7 +62,8 @@
 		4D3C32422A07F28B00E56A57 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				4D8E328E29E404F3004D7712 /* MainUITableViewController.swift */,
+				4D01E02E2A0BAD3300A2C470 /* CategoryController.swift */,
+				4D8E328E29E404F3004D7712 /* ToDoListController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -167,7 +170,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D8E328F29E404F3004D7712 /* MainUITableViewController.swift in Sources */,
+				4D8E328F29E404F3004D7712 /* ToDoListController.swift in Sources */,
+				4D01E02F2A0BAD3300A2C470 /* CategoryController.swift in Sources */,
 				4D8E32A829E5ABA0004D7712 /* Interface.swift in Sources */,
 				4D3C323F2A07F04E00E56A57 /* CoreDataModel.xcdatamodeld in Sources */,
 				4D8E328B29E404F3004D7712 /* AppDelegate.swift in Sources */,

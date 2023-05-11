@@ -45,14 +45,15 @@ struct NavigationBarConfigurer {
     }
 }
 
-
 struct K {
-    static let id = "ToDoItemCell"
+    
+    static let categoryCellId = "CategoryCellId"
+    static let toDodCellId = "ToDoItemCell"
     static let arrayKey = "ToDoListArray"
     
     struct colors {
         static let mainBackgroundColor = "MainBackcroundColor"
         static let barAppearanceColor = "BarAppearanceColor"
+        static let searchFieldColor = "SearchFieldColor"
     }
 }
-

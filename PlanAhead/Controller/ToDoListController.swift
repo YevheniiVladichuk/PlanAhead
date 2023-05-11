@@ -8,22 +8,21 @@
 import UIKit
 import CoreData
 
-class MainUITableViewController: UITableViewController {
+class ToDoListController: UITableViewController {
     
     let interface = Interface()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var itemsArray = [Item]()
     var searchBar: UISearchBar!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: K.toDodCellId)
         
         searchBar = interface.configureSearchbar(for: tableView, withDelegate: self)
         
         interface.configNavigationBar(navItem: self.navigationItem, maintTitle: "Main List", rBtnTitle: "+", target: self, rBtnAction: #selector(addButtonPressed))
-        
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: K.id)
         
         loadItems()
     }
@@ -34,7 +33,7 @@ class MainUITableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.id, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.toDodCellId, for: indexPath)
         
         let item = itemsArray[indexPath.row]
         
@@ -65,7 +64,7 @@ class MainUITableViewController: UITableViewController {
         return 50
     }
     
-    // MARK: - Add new items
+    // MARK: - Add New Items
     @objc func addButtonPressed(_ sender: UIBarButtonItem) {
         
         var textField = UITextField()
@@ -93,15 +92,14 @@ class MainUITableViewController: UITableViewController {
         present(allert, animated: true, completion: nil)
     }
     
-    // MARK: - Model Manipulatiom Methods
-    
+    // MARK: - Data Manipulatiom Methods
     func saveItems() {
         do {
             try context.save()
         } catch {
             print("Error saving context: \(error)")
         }
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     // func with defoult value
@@ -117,15 +115,17 @@ class MainUITableViewController: UITableViewController {
     }
 }
 
-extension MainUITableViewController: UISearchBarDelegate {
+
+// MARK: - Extensions
+extension ToDoListController: UISearchBarDelegate {
     
 //    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-////        let request: NSFetchRequest<Item> = Item.fetchRequest()
-////
-////        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-////        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-////
-////        loadItems(with: request)
+//        let request: NSFetchRequest<Item> = Item.fetchRequest()
+//
+//        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+//
+//        loadItems(with: request)
 //    }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
