@@ -10,17 +10,14 @@ import UIKit
 
 class Interface {
          
-    
     func configureSearchbar(for tableView: UITableView, withDelegate delegate: UISearchBarDelegate)-> UISearchBar {
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 56))
         searchBar.placeholder = "Search"
         searchBar.delegate = delegate
-//        searchBar.backgroundColor = UIColor(named: K.colors.mainBackgroundColor)
         searchBar.barTintColor = UIColor(named: K.colors.mainBackgroundColor)
         searchBar.searchTextField.backgroundColor = UIColor(named: K.colors.searchFieldColor)
-
-        tableView.tableHeaderView = searchBar
         
+        tableView.tableHeaderView = searchBar
         
         return searchBar
     }
@@ -30,5 +27,5 @@ class Interface {
         navItem.rightBarButtonItem = addButton
         navItem.title = maintTitle
     }
+    
 }
-

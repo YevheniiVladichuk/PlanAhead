@@ -14,17 +14,32 @@ class ToDoListController: UITableViewController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var itemsArray = [Item]()
     var searchBar: UISearchBar!
+    var selectedCategory: Category? {
+        didSet {
+            loadItems()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = UIColor(named: K.colors.mainBackgroundColor)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: K.toDodCellId)
         
         searchBar = interface.configureSearchbar(for: tableView, withDelegate: self)
         
         interface.configNavigationBar(navItem: self.navigationItem, maintTitle: "Main List", rBtnTitle: "+", target: self, rBtnAction: #selector(addButtonPressed))
         
-        loadItems()
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < 0 {
+            // Показать searchBar при свайпе вниз
+            tableView.tableHeaderView = searchBar
+        } else {
+            // Скрыть searchBar при свайпе вверх
+            tableView.tableHeaderView = nil
+        }
     }
     
     // MARK: - TableView Datasource Methods
@@ -36,7 +51,6 @@ class ToDoListController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.toDodCellId, for: indexPath)
         
         let item = itemsArray[indexPath.row]
-        
         cell.textLabel?.text = item.title
         cell.backgroundColor = .systemPink
         
@@ -78,6 +92,7 @@ class ToDoListController: UITableViewController {
                 let newItem = Item(context: self.context)
                 newItem.title = textField.text!
                 newItem.done = false
+                newItem.parentCategory = self.selectedCategory
                 self.itemsArray.append(newItem)
                 self.saveItems()
             }
@@ -94,6 +109,7 @@ class ToDoListController: UITableViewController {
     
     // MARK: - Data Manipulatiom Methods
     func saveItems() {
+        
         do {
             try context.save()
         } catch {
@@ -103,7 +119,16 @@ class ToDoListController: UITableViewController {
     }
     
     // func with defoult value
-    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory.categoryName == %@", selectedCategory!.categoryName!)
+        
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+        
         
         do {
             itemsArray = try context.fetch(request)
@@ -118,24 +143,15 @@ class ToDoListController: UITableViewController {
 
 // MARK: - Extensions
 extension ToDoListController: UISearchBarDelegate {
-    
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        let request: NSFetchRequest<Item> = Item.fetchRequest()
-//
-//        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//
-//        loadItems(with: request)
-//    }
-    
+        
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
-        loadItems(with: request)
+        loadItems(with: request, predicate: predicate)
         
         if searchBar.text!.count == 0 {
             loadItems()

@@ -27,6 +27,16 @@ class CategoryController: UITableViewController {
         loadCategories()
     }
     
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < 0 {
+            // Показать searchBar при свайпе вниз
+            tableView.tableHeaderView = searchBar
+        } else {
+            // Скрыть searchBar при свайпе вверх
+            tableView.tableHeaderView = nil
+        }
+    }
+    
     // MARK: - Add New Category
     @objc func addButtonPressed() {
         
@@ -46,6 +56,7 @@ class CategoryController: UITableViewController {
             allertTexField.placeholder = "New task"
             textField = allertTexField
         }
+        
         
         allert.addAction(action)
         present(allert, animated: true, completion: nil)
@@ -94,6 +105,8 @@ class CategoryController: UITableViewController {
         print("")
         let toDoList = ToDoListController()
         
+        toDoList.selectedCategory = categoriesArray[indexPath.row]
+        
         toDoList.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(toDoList, animated: true)
     }
@@ -106,8 +119,5 @@ class CategoryController: UITableViewController {
 
 // MARK: - Extensions
 extension CategoryController: UISearchBarDelegate {
-    
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        <#code#>
-//    }
+
 }
