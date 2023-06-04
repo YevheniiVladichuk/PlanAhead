@@ -54,7 +54,8 @@ class ToDoListController: UITableViewController {
         
         if let item = toDoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
-            cell.backgroundColor = .systemPink
+            cell.tintColor = .systemGreen
+            cell.backgroundColor = UIColor(named: K.colors.cellColors)
             
             cell.accessoryType = item.done ? .checkmark: .none
         }else {

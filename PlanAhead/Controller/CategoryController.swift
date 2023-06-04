@@ -15,14 +15,15 @@ class CategoryController: UITableViewController {
     
     var categories: Results<Category>?
     var searchBar: UISearchBar!
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: K.categoryCellId)
         
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = UIColor(named: K.colors.mainBackgroundColor)
         searchBar = interface.configureSearchbar(for: tableView, withDelegate: self)
-        
         interface.configNavigationBar(navItem: self.navigationItem, maintTitle: "Category", rBtnTitle: "+", target: self, rBtnAction: #selector(addButtonPressed))
         
         loadCategories()
@@ -48,7 +49,6 @@ class CategoryController: UITableViewController {
                 
                 let newCategory = Category()
                 newCategory.categoryName = textField.text!
-            
                 self.save(category: newCategory)
             }
         }
@@ -70,14 +70,11 @@ class CategoryController: UITableViewController {
         }catch {
             print("Error saving context: \(error)")
         }
-        
         tableView.reloadData()
     }
     
     func loadCategories() {
-       
         categories = realm.objects(Category.self)
- 
         tableView.reloadData()
     }
     
@@ -89,10 +86,11 @@ class CategoryController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: K.categoryCellId, for: indexPath)
-        
+    
         let categoryTitle = categories?[indexPath.row].categoryName ?? "No Categories Added"
+       
         cell.textLabel?.text = categoryTitle
-        cell.backgroundColor = .blue
+        cell.backgroundColor = UIColor(named: K.colors.cellColors)
         
         return cell
     }
@@ -122,6 +120,7 @@ class CategoryController: UITableViewController {
         toDoList.selectedCategory = categories?[indexPath.row]
         
         toDoList.modalPresentationStyle = .fullScreen
+        toDoList.title = categories![indexPath.row].categoryName
         navigationController?.pushViewController(toDoList, animated: true)
     }
     
@@ -129,7 +128,6 @@ class CategoryController: UITableViewController {
         return 50
     }
 }
-
 
 // MARK: - Extensions
 extension CategoryController: UISearchBarDelegate {

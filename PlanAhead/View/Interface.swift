@@ -22,10 +22,11 @@ class Interface {
         return searchBar
     }
     
+    
     func configNavigationBar(navItem: UINavigationItem, maintTitle: String, rBtnTitle: String, target: Any?, rBtnAction: Selector) {
         let addButton = UIBarButtonItem(title: rBtnTitle, style: .plain, target: target, action: rBtnAction)
         navItem.rightBarButtonItem = addButton
         navItem.title = maintTitle
     }
-    
+
 }

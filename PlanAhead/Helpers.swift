@@ -55,5 +55,6 @@ struct K {
         static let mainBackgroundColor = "MainBackcroundColor"
         static let barAppearanceColor = "BarAppearanceColor"
         static let searchFieldColor = "SearchFieldColor"
+        static let cellColors = "BEDEFE"
     }
 }
